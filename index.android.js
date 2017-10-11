@@ -14,7 +14,7 @@ import {
 	View
 } from 'react-native';
 
-import MainComponent from './app/route'
+import MainComponent from './app/root'
 //import SimpleApp from './app/route'
 // export default class HelloWorld extends Component {
 //   render() {

@@ -41,21 +41,11 @@ import {
 // });
 // module.exports = Routes;
 
-class HomeScreen extends React.Component {
-	static navigationOptions = {
-		title: 'Welcome world',
-	};
-	render() {
-		const {
-			navigate
-		} = this.props.navigation;
-		return (
-			<View>
-				<Text>Hello,Navigation!</Text>
-			</View>
-		);
-	}
-}
+
+import HomeDetailComponent from './page/home_detail'
+
+
+import HomeScreen from './container/MainContainer'
 
 class ChatScreen extends React.Component {
 	static navigationOptions = ({
@@ -75,17 +65,10 @@ class ChatScreen extends React.Component {
 	}
 }
 
-export
-default class MainComponent extends Component {
-	render() {
-		return (
-			<Navigator/>
-		);
-	}
-}
+
 
 const TabRouteConfigs = {
-	Home: {
+	Main: {
 		screen: HomeScreen,
 		navigationOptions: ({
 			navigation
@@ -142,19 +125,28 @@ const styles = StyleSheet.create({
 });
 
 const TabNavigatorConfigs = {
-	initialRouteName: 'Home',
+	initialRouteName: 'Main',
 	tabBarComponent: TabBarBottom,
 	tabBarPosition: 'bottom',
 	lazy: true,
 }
-const Tab = TabNavigator(TabRouteConfigs, TabNavigatorConfigs);
+const TabContainer = TabNavigator(TabRouteConfigs, TabNavigatorConfigs);
+
+
 const StackRouteConfigs = {
-	Tab: {
-		screen: Tab
+	Main: {
+		screen: TabContainer,
+		navigationOptions: {
+        headerLeft: null
+      }
+	},
+
+	List_Detail:{
+		screen: HomeDetailComponent
 	}
 };
 const StackNavigatorConfigs = {
-	initialRouteName: 'Tab',
+	initialRouteName: 'Main',
 	navigationOptions: {
 		title: '标题',
 		headerStyle: {
@@ -168,6 +160,7 @@ const StackNavigatorConfigs = {
 
 
 const Navigator = StackNavigator(StackRouteConfigs, StackNavigatorConfigs);
+export default Navigator;
 // const SimpleApp = StackNavigator({
 // 	Home: {
 // 		screen: HomeScreen
@@ -177,5 +170,4 @@ const Navigator = StackNavigator(StackRouteConfigs, StackNavigatorConfigs);
 // 	}
 // });
 //module.exports = SimpleApp;
-// export
-// default Navigator;
+ 
