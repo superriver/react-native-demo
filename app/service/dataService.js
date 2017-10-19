@@ -1,4 +1,4 @@
-const url = 'http://www.imooc.com/api/teacher?type=4&num=30';
+import {APP_KEY,URL} from '.././common/constant'
 
 const fetchService=(url,options={})=>{
 	return fetch(url,options)
@@ -13,8 +13,16 @@ const fetchService=(url,options={})=>{
 	});
 };
 
+
 export default class Api{
-	static getList(){
-		return fetchService(url);
+
+	static getNewsList(type){
+		return fetchService(URL+'/'+type+"?"+"key="+APP_KEY+"&num=10");
+	}
+
+	static getHealthList()
+	{
+		console.log("url->"+URL)
+		return fetchService(URL+"/health?"+"key="+APP_KEY+"&num=10");
 	}
 }

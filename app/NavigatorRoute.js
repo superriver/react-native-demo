@@ -18,54 +18,17 @@ import {
 	TabBarBottom,
 	TabNavigator
 } from 'react-navigation';
-// var Tab = require('./tab')
-// var Routes=React.createClass({
-// 	configureScence:function(){
-// 		return Navigator.SceneConfig.FloatFromRight;
-// 	},
-// 	readerScene:function(route,navigator){
-// 		let Component=route.component;
-// 		return <Component route={route} navigator={navigator} />
-// 	},
-// 	render:function(){
-// 		var renderScene=this.renderSceneAndroid;
-// 		var configureScence = this.configureScenceAndroid;
-// 		return(
-// 			<Navigator
-// 				initialRoute={{name:'主页',component:Tab}}
-// 				configureScence={this.configureScence}
-// 				readerScene={this.readerScene}
-// 			/>
-// 		);
-// 	}
-// });
-// module.exports = Routes;
 
 
-import HomeDetailComponent from './page/home_detail'
+
+//import HomeDetailComponent from './page/home_detail'
 
 
 import HomeScreen from './container/MainContainer'
 
-class ChatScreen extends React.Component {
-	static navigationOptions = ({
-		navigation
-	}) => ({
-		title: 'Chat with river',
-	});
-	render() {
-		// const {
-		// 	params
-		// } = this.props.navigation.state;
-		return (
-			<View>
-        		<Text>Chat with river</Text>
-      		</View>
-		);
-	}
-}
+import WeiXinScreen from './pages/WeiXinPage'
 
-
+import NewsScreen from './pages/NewsPage'
 
 const TabRouteConfigs = {
 	Main: {
@@ -91,10 +54,27 @@ const TabRouteConfigs = {
 			),
 		}),
 	},
-	Chat: {
-		screen: ChatScreen,
+	News: {
+		screen: NewsScreen,
+		navigationOptions: ({
+			navigation
+		}) => ({
+			tabBarLabel: '新闻',
+			tabBarIcon: ({
+				focused,
+				tintColor
+			}) => (
+				<Image
+		        source={require('./images/tab/tab_messagecenter_n.png')}
+		        style={[styles.icon, {tintColor: tintColor}]}
+		      />
+			),
+		}),
+	},
+	WeiXin: {
+		screen: WeiXinScreen,
 		navigationOptions: {
-			tabBarLabel: '附近',
+			tabBarLabel: '微信精选',
 			tabBarIcon: ({
 				focused,
 				tintColor
@@ -141,9 +121,9 @@ const StackRouteConfigs = {
       }
 	},
 
-	List_Detail:{
-		screen: HomeDetailComponent
-	}
+	// List_Detail:{
+	// 	screen: HomeDetailComponent
+	// }
 };
 const StackNavigatorConfigs = {
 	initialRouteName: 'Main',
@@ -159,8 +139,8 @@ const StackNavigatorConfigs = {
 };
 
 
-const Navigator = StackNavigator(StackRouteConfigs, StackNavigatorConfigs);
-export default Navigator;
+export default Navigator = StackNavigator(StackRouteConfigs, StackNavigatorConfigs);
+
 // const SimpleApp = StackNavigator({
 // 	Home: {
 // 		screen: HomeScreen

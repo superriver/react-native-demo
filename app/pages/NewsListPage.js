@@ -10,11 +10,9 @@ import {
 	TouchableNativeFeedback,
 Dimensions,AsyncStorage,Platform,StyleSheet,View,Text,TouchableHighlight} from 'react-native'
 
-
 import Api from '.././service/dataService'
 
-var List_Detail=require('.././page/home_detail');
- class ListViewBasics extends Component{
+export default class HomeComponent extends Component{
 	constructor(props){
 		super(props);
 		const ds  = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
@@ -28,19 +26,14 @@ var List_Detail=require('.././page/home_detail');
 		return <ActivityIndicator/>;
 	}
 
-	pressRow(title){
-	this.props.navigator.push({
-		name:"列表详情",
-		component:List_Detail,
-		params:{
-			title:title
-			}
-		});
+	pressRow(rowData){
+		const { navigate } = this.props.navigation;
+	    navigate('List_Detail', { rowData });
 	}
 
 	_renderRow(rowData){
 		return(
-				<TouchableNativeFeedback onPress={ () => this.pressRow.bind(this,rowData.name)}>
+				<TouchableNativeFeedback onPress={ () => this.pressRow(rowData)}>
 					<View style={styles.lvRow}>
 						<Image style={styles.img} source={{uri:rowData.picSmall}}/>
 
@@ -54,7 +47,7 @@ var List_Detail=require('.././page/home_detail');
 	}
 
 	componentDidMount(){
-		 Api.getList()
+		 Api.getNewsList(this.props.key)
 		.then((responseData)=>{
 			this.setState({
 				dataSource:this.state.dataSource.cloneWithRows(responseData.data)
@@ -81,11 +74,13 @@ var List_Detail=require('.././page/home_detail');
 		 var progressBar =
 		   <View>
 		      <ProgressBarAndroid styleAttr="Inverse"/>
-		    </View>; 
+			</View>; 
+			
+			const {params} = this.props;
+
 		return(
 				<View>
 					<ListView
-
 						dataSource={this.state.dataSource}
 						renderRow={this._renderRow}
 						refreshControl={
@@ -105,8 +100,8 @@ var List_Detail=require('.././page/home_detail');
 				</View>
 			);
 	}
-}
 
+}
 const styles=StyleSheet.create({
 	lvRow:{
 		flex:1,
@@ -136,5 +131,3 @@ const styles=StyleSheet.create({
 	}
 
 });
-
-module.exports = ListViewBasics;

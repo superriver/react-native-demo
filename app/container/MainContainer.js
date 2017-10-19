@@ -20,7 +20,7 @@ import {
 	TabNavigator
 } from 'react-navigation';
 
-import HomeComponent from '.././page/home'
+import HomePage from '../pages/HomePage'
 
 export default class HomeScreen extends React.Component {
 	constructor(props){
@@ -35,7 +35,7 @@ export default class HomeScreen extends React.Component {
 		} = this.props.navigation;
 		return (
 					<View>
-						<HomeComponent {...this.props}/>
+						<HomePage {...this.props}/>
 					</View>
 		);
 	}
