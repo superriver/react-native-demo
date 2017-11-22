@@ -71,6 +71,7 @@ const TabRouteConfigs = {
 			),
 		}),
 	},
+	
 	WeiXin: {
 		screen: WeiXinScreen,
 		navigationOptions: {

@@ -72,7 +72,7 @@ export default class HomePage extends Component{
 		return (
 			<TouchableNativeFeedback>
 				<View style={styles.lvRow}>
-					<Image style={styles.img} source={{uri:rowData.picUrl}}/>
+					<Image style={styles.img} source={{uri:(rowData.picUrl=='' ? 'defaults':rowData.picUrl)}}/>
 					<View style={styles.textView}>
 							<Text style={styles.textTitle} numberOfLines={1}>{rowData.title}</Text>
 							<Text style={styles.textDate} >{rowData.ctime}</Text>
@@ -94,7 +94,6 @@ export default class HomePage extends Component{
 					>
 					{
 	 					images.map((uri,i)=>{
-
 							return (
 								<TouchableNativeFeedback key={i}>
 								<Image source={{ uri: uri.imgurl }} style={{ height: 150 }} />
@@ -123,8 +122,28 @@ export default class HomePage extends Component{
 
 	_renderHeaderView(){
 		let images = this.state.images;
-		return (<View>
-				{this.renderSwiper(images)}
+		return (
+		<View>
+				<Swiper height={150}
+					autoplay={true}
+					autoplayTimeout={3}
+					horizontal={true}
+				
+					dot={<View style={{ width: 8, height: 8, backgroundColor: 'white', borderRadius: 4, marginLeft: 3, marginRight: 3 }}></View>}
+					paginationStyle={{bottom: 5, left: null, right: 10,}}
+					activeDot={<View style={{ width: 8, height: 8, backgroundColor: 'orange', borderRadius: 4, marginLeft: 3, marginRight: 3 }}></View>}
+					>
+					{
+	 					images.map((uri,i)=>{
+							return (
+								<TouchableNativeFeedback key={i}>
+								<Image source={{ uri: uri.imgurl }} style={{ height: 150 }} />
+								</TouchableNativeFeedback>
+							)
+						})
+					}
+					</Swiper>
+
 		</View>)
 	}
 }

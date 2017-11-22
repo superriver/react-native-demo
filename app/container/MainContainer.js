@@ -29,6 +29,7 @@ export default class HomeScreen extends React.Component {
 	static navigationOptions = {
 		title: 'Welcome world',
 	};
+	
 	render() {
 		const {
 			navigate

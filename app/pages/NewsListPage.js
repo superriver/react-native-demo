@@ -6,13 +6,18 @@ import {
 	ActivityIndicator,
 	ProgressBarAndroid,
 	TouchableOpacity,
+	Alert,
 	Navigator,
 	TouchableNativeFeedback,
 Dimensions,AsyncStorage,Platform,StyleSheet,View,Text,TouchableHighlight} from 'react-native'
 
 import Api from '.././service/dataService'
 
-export default class HomeComponent extends Component{
+export default class NewsListPage extends Component{
+	static propTypes = {
+		categoryKey: React.PropTypes.string.isRequired,
+	  };
+
 	constructor(props){
 		super(props);
 		const ds  = new ListView.DataSource({rowHasChanged:(r1,r2)=>r1!==r2});
@@ -21,6 +26,8 @@ export default class HomeComponent extends Component{
 			dataSource:ds
 		};
 		this._renderRow=this._renderRow.bind(this);
+		console.log("constructor");
+		
 	}
 	renderFooter(){
 		return <ActivityIndicator/>;
@@ -33,24 +40,34 @@ export default class HomeComponent extends Component{
 
 	_renderRow(rowData){
 		return(
-				<TouchableNativeFeedback onPress={ () => this.pressRow(rowData)}>
-					<View style={styles.lvRow}>
-						<Image style={styles.img} source={{uri:rowData.picSmall}}/>
-
-						<View style={styles.textView}>
-							<Text style={styles.textTitle} numberOfLines={1}>{rowData.name}</Text>
-							<Text style={styles.textContent}>{rowData.description}</Text>
-						</View>
-					</View>
-				</TouchableNativeFeedback>
+			<TouchableNativeFeedback
+        background={TouchableNativeFeedback.SelectableBackground()}
+        onPress={this.props.itemClicked}>
+		<View style={styles.itemContainer}>
+          <Image style={styles.itemIcon} 
+            source={{uri: (rowData.thumbnail_pic_s=='' ? 'defaults' : rowData.thumbnail_pic_s)}}/>
+          <View style={styles.itemDescription}>
+            <Text style={styles.itemTitle} 
+              numberOfLines={4}>
+              {rowData.title}
+            </Text>
+            <Text style={styles.fromText} 
+              numberOfLines={1}>
+              {rowData.author_name}
+            </Text>
+          </View>
+        </View>
+      </TouchableNativeFeedback>
 			);
 	}
 
 	componentDidMount(){
-		 Api.getNewsList(this.props.key)
+		console.log("componentDidMount");
+		 Api.getNewsList(this.props.categoryKey)
 		.then((responseData)=>{
+			console.log("getNewsList");
 			this.setState({
-				dataSource:this.state.dataSource.cloneWithRows(responseData.data)
+				dataSource:this.state.dataSource.cloneWithRows(Array.from(responseData.result.data))
 			})
 		})
 		.done();
@@ -61,16 +78,19 @@ export default class HomeComponent extends Component{
 		setTimeout(()=>{
  		Api.getList()
 		.then((responseData)=>{
+
 			this.setState({
 				refreshing:false,
-				dataSource:this.state.dataSource.cloneWithRows(responseData.data)
+				dataSource:this.state.dataSource.cloneWithRows(responseData.newslist)
 			});
 		}).done();
 		},5000);
 
 		
 	}
+	
 	render(){
+		console.log("render"+this.state.dataSource);
 		 var progressBar =
 		   <View>
 		      <ProgressBarAndroid styleAttr="Inverse"/>
@@ -102,32 +122,43 @@ export default class HomeComponent extends Component{
 	}
 
 }
-const styles=StyleSheet.create({
-	lvRow:{
-		flex:1,
-		flexDirection:'row',
-		padding:10,
+const styles = StyleSheet.create({
+	itemContainer: {
+	  backgroundColor: 'white',
+	  marginVertical: 4,
+	  borderColor: '#dddddd',
+	  borderStyle: null,
+	  borderWidth: 0.5,
+	  borderRadius: 2,
+	  height: 113,
+	  flexDirection: 'row'
 	},
-	textView:{
-		flex:1,
-		justifyContent:'center',
-		alignItems:'center',
-		padding:5
+  
+	itemIcon: {
+	  width: 163,
+	  height: 113,
+	  backgroundColor: '#e9e9e9',
 	},
-	textTitle:{
-		flex:1,
-		textAlign:'center',
-		color:'#f00'
+  
+	itemDescription: {
+	  flex: 1,
+	  marginLeft: 8,
+	  marginTop: 12,
+	  marginRight: 8,
+	  marginBottom: 8,
 	},
-	textContent:{
-		flex:1,
-		fontSize:11,
-		color:'#000',
-		textAlign:'center',
+  
+	itemTitle: {
+	  flex: 5,
+	  color: '#535252',
+	  fontSize: 14,
 	},
-	img:{
-		height:55,
-		width:100,
-	}
-
-});
+  
+	fromText: {
+	  flex: 1,
+	  fontSize: 9,
+	  color: '#ff9800',
+	  alignSelf: 'flex-end',
+	},
+  });
+  

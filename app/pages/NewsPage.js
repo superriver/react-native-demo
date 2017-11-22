@@ -10,11 +10,19 @@ import {
 	TouchableNativeFeedback,
 Dimensions,AsyncStorage,Platform,StyleSheet,View,Text,TouchableHighlight} from 'react-native'
 
-import  ScrollableTabView , { ScrollableTabBar } from 'react-native-scrollable-tab-view';
+import  ScrollableTabView , { DefaultTabBar,ScrollableTabBar } from 'react-native-scrollable-tab-view';
 import Api from '.././service/dataService'
-import {NEWS_CATEGORY_NET_DATA} from '.././common/constant'
+import {FAKE_NEWS_CATEGORY_NET_DATA} from '.././common/constant'
 import NewsListPage from '../pages/NewsListPage'
+
+
+var ScreenWidth = Dimensions.get('window').width;
 export default class NewsPage extends Component{
+	static navigationOptions = ({
+		navigation
+	}) => ({
+		title: 'News',
+	});
 
 	constructor(props){
 		super(props);
@@ -50,55 +58,55 @@ export default class NewsPage extends Component{
 		      <ProgressBarAndroid styleAttr="Inverse"/>
 		    </View>; 
 		return(
-				<View>
-					{/* <ActionBar
-					 title={"新闻"}
-					/> */}
 					<ScrollableTabView
+						style={styles.container}
 						tabBarPosition='top'
-						tabBarUnderlineStyle={{backgroundColor:'#03a8fs',height:2}}
+						tabBarUnderlineStyle={styles.lineStyle}
 						tabBarBackgroundColor='#ffffff'
 						tabBarUnderlineColor='#03a8f4'
 						tabBarActiveTextColor='#9b9b9b'
 						scrollWithoutAnimation={false}
 						tabBarTextStyle={{fontSize:14}}
-						initialPage={this._currentPage(this.props.key)}
-						renderTabBar={()=><ScrollableTabBar/>}
+						renderTabBar={()=><DefaultTabBar
+							tabStyle={styles.tab} textStyle={styles.tabText}
+						/>}
 					>
-					{this._renderTabPage}
+					{
+
+					FAKE_NEWS_CATEGORY_NET_DATA.map((category)=>{
+						return <NewsListPage 
+						categoryKey={category.key} 
+						key={category.key}
+						tabLabel={category.title}/>
+						})
+					}
 					</ScrollableTabView>
-				</View>
 			);
 	}
 
-	_currentPage(curKey){
-		let index = 0;
-		for(let i=0;i<NEWS_CATEGORY_NET_DATA.length;i++){
-			if(NEWS_CATEGORY_NET_DATA[i].key == curKey){
-				index = i;
-				break;
-			}
-		}
-		return index;
-	}
-	_renderTabPage(){
-		let pages = [];
-		for(let i=0;i<NEWS_CATEGORY_NET_DATA.length;i++){
-			pages.push(
-				<NewsListPage
-				key={NEWS_CATEGORY_NET_DATA[i].key}
-				tabLabel = {NEWS_CATEGORY_NET_DATA[i].title}
-				/>
-			)
-		}
-
-		return pages;
+	// _currentPage(curKey){
+	// 	let index = 0;
+	// 	for(let i=0;i<NEWS_CATEGORY_NET_DATA.length;i++){
+	// 		if(NEWS_CATEGORY_NET_DATA[i].key == curKey){
+	// 			index = i;
+	// 			break;
+	// 		}
+	// 	}
+	// 	return index;
+	// }
+	
+	_renderTabPage(category){
+		
 	}
 
 }
 
 
 const styles=StyleSheet.create({
+	constaner:{
+		flex:1,
+		marginTop:20
+	},
 	lvRow:{
 		flex:1,
 		flexDirection:'row',
@@ -124,6 +132,22 @@ const styles=StyleSheet.create({
 	img:{
 		height:55,
 		width:100,
-	}
-
+	},
+	lineStyle:{
+		height:2,
+		backgroundColor:'#FF0000'
+	},
+	 textStyle: {
+         flex: 1,
+         fontSize:20,
+         marginTop:20,
+         textAlign:'center',
+     },
+ tab: {
+	paddingBottom: 0
+	
+  },
+  tabText: {
+    fontSize: 16
+  },
 });

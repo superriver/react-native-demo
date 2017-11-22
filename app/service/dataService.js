@@ -1,4 +1,5 @@
-import {APP_KEY,URL} from '.././common/constant'
+import {APP_KEY,APP_KEY_ONLINE_NEWS,URL_HEALTH,URL_ONLINE_NEWS,
+	APP_KEY_WEI_XIN_JINGXUAN,URL_WEI_XIN_JINGXUAN} from '.././common/constant'
 
 const fetchService=(url,options={})=>{
 	return fetch(url,options)
@@ -16,13 +17,17 @@ const fetchService=(url,options={})=>{
 
 export default class Api{
 
-	static getNewsList(type){
-		return fetchService(URL+'/'+type+"?"+"key="+APP_KEY+"&num=10");
+	static getNewsList(key){
+		return fetchService(URL_ONLINE_NEWS+'?key='+APP_KEY_ONLINE_NEWS+'&type='+key);
 	}
 
 	static getHealthList()
 	{
-		console.log("url->"+URL)
-		return fetchService(URL+"/health?"+"key="+APP_KEY+"&num=10");
+		console.log("url->"+URL_HEALTH)
+		return fetchService(URL_HEALTH+"/health?"+"key="+APP_KEY+"&num=10");
+	}
+
+	static getWeiXinList(start,pageLimit){
+		return fetchService(URL_HEALTH+'/wxnew?'+'key='+APP_KEY+'&num='+pageLimit+'&page='+start);
 	}
 }
